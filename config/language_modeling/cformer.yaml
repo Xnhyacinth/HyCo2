@@ -1,0 +1,40 @@
+## data
+train_file: data/context_aware_instrution_tuning_data_bm.jsonl
+max_seq_length: 2048  
+retrieval_context_length: 512
+preprocessing_num_workers: 32
+overwrite_cache: false
+use_rag_tuning: true
+with_xrag: false
+
+## model pretrained_model/sfr-mistral-7b
+model_name_or_path: checkpoint/pretrain/cformer_2e-4/last 
+chat_format: mistral
+projector_type: cformer_pt_2e-4_lr3e-4_e2
+cformer_model_name_or_path: models/FacebookAI__roberta-base
+
+## train
+task_type: finetune
+workdir: ./
+learning_rate: 3.0e-4
+lr_scheduler_type: linear
+warmup_ratio: 0.03
+weight_decay: 0.0
+num_train_epochs: 2
+use_flash_attn: true
+alpha_nll: 1.0
+alpha_kl: 2.0
+kl_temperature: 1.0 
+clip_grad_norm: -1.0
+seed: 1024
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4   ## assume there are 8 GPUs
+update_projector_only: true
+
+## logging
+logging_steps: 1
+project_name: cformer_finetune
+exp_name: test_finetune
+# checkpointing_steps: "1000" ## string number or epoch
+
+

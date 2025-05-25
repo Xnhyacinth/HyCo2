@@ -1,0 +1,40 @@
+## data
+train_file: data/context_aware_instrution_tuning_data_bm.jsonl
+max_seq_length: 4096
+retrieval_context_length: 2048
+preprocessing_num_workers: 32
+overwrite_cache: false
+use_rag_tuning: true
+with_xrag: false
+
+## model pretrained_model/sfr-mistral-7b
+model_name_or_path: checkpoint/pretrain/gated_pos_fproj_ptuning_mlp2x_gelu_selectp_calp_chunk_red_mypt_stage2/last 
+chat_format: mistral
+projector_type: gated_pt_lr2e-5_pos_fproj_mix_selectp_calp_chunk_ptuning_mlp2x_gelu_stage3_e1_m4096_r2048_top10
+num_query_tokens: 16
+
+## train
+task_type: finetune
+workdir: ./
+learning_rate: 2.0e-5
+lr_scheduler_type: linear
+warmup_ratio: 0.03
+weight_decay: 0.0
+num_train_epochs: 1
+use_flash_attn: true
+alpha_nll: 1.0
+alpha_kl: 2.0
+kl_temperature: 1.0 
+clip_grad_norm: -1.0
+seed: 1024
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4   ## assume there are 8 GPUs
+update_projector_only: true
+
+## logging
+logging_steps: 1
+project_name: gate_finetune
+exp_name: test_finetune
+# checkpointing_steps: "1000" ## string number or epoch
+
+
