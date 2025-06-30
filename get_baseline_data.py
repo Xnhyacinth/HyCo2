@@ -12,7 +12,7 @@ compressor = PromptCompressor(
     device_map="auto",
 )
 for data in ['2wikimqa', 'nq', 'tqa', 'hotpotqa', 'wq', 'cwq', 'popqa']:
-    with open(f'data30/{data}/test.jsonl', 'r') as f:
+    with open(f'data/{data}/test.jsonl', 'r') as f:
         test_data = [json.loads(x) for x in f.readlines()]
     if data == "cwq" or data == "popqa":
         xxx = [1,2,3]
@@ -55,7 +55,7 @@ for data in ['2wikimqa', 'nq', 'tqa', 'hotpotqa', 'wq', 'cwq', 'popqa']:
         for dd in test_data[:]:
             if dd["background00"] != [" "]:
                 # try:
-                dd[f"llmlingua2_r{retrieval_topk}_t32"] = compressor.compress_prompt('\n'.join(dd["background00"]), target_token=20, force_tokens = ['\n', '?'])['compressed_prompt']
+                dd[f"llmlingua2_r{retrieval_topk}_t32"] = compressor.compress_prompt('\n'.join(dd["background00"]), target_token=32, force_tokens = ['\n', '?'])['compressed_prompt']
 
             else:
                 dd[f"llmlingua2_r{retrieval_topk}_t32"] = " "
